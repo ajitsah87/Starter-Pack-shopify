@@ -1,4 +1,226 @@
-{%- comment -%}Header Layout for NERO Theme{%- endcomment -%}
+
+{%- style -%}
+.header {
+  width: 100%;
+  background: #ffffff;
+}
+
+.header__top {
+  border-bottom: 1px solid #e5e5e5;
+  padding: 0.5rem 1rem;
+}
+
+.header__main-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.5rem 1rem;
+}
+
+.header__top-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search-form {
+  position: relative;
+  width: 240px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.5rem 2.5rem 0.5rem 2.5rem;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+}
+
+.header__logo {
+  height: 48px;
+  object-fit: contain;
+}
+
+.header__logo-mobile {
+  height: 32px;
+  object-fit: contain;
+}
+
+.header__icons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.currency-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.flag-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.nav__desktop {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.nav__list {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1rem 0;
+  list-style: none;
+  margin: 0;
+}
+
+.nav__link {
+  text-decoration: none;
+  color: #000000;
+  transition: color 0.2s;
+}
+
+.nav__link:hover {
+  color: #9e1918;
+}
+
+.header__mobile {
+  display: none;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.mobile-menu__toggle {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100vh;
+  background: #ffffff;
+  padding: 2rem 1rem;
+  z-index: 1000;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.mobile-menu.is-active {
+  transform: translateX(0);
+  display: block;
+}
+
+.mobile-menu__links {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@media screen and (max-width: 768px) {
+  .header__top,
+  .nav__desktop {
+    display: none;
+  }
+
+  .header__mobile {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+{%- endstyle -%}
+
+<div class="header">
+  <div class="header__top">
+    <div class="header__main-container">
+      <div class="header__top-content">
+        <form action="/search" method="get" class="search-form">
+          <input type="text" name="q" placeholder="Search for items" class="search-input">
+          {% render 'icon-search' %}
+        </form>
+
+        <a href="/" class="header__logo-wrapper">
+          {% if section.settings.logo %}
+            {{ section.settings.logo | image_url: width: 180 | image_tag: class: 'header__logo', alt: shop.name }}
+          {% else %}
+            <span class="h4">{{ shop.name }}</span>
+          {% endif %}
+        </a>
+
+        <div class="header__icons">
+          <div class="currency-selector">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAABDUlEQVR4nO2WQQ6CMBBF/7o0nsJ4C7mFiSfQK7jkLO7UWFcewXgNWbhxRRNjovYPpGCBEmPtJk7ykqYt8zrTTgv8VRQAGkAJwCRsJXUZM8YCQJ9YgwUzxgTAnVj3kjrN2ADoCHZ7APsEzQHAFcANwFnEO0ldxnTEjgAeAKokzZ8ygLXUnwBsAMzCvQSwlbqM6YgdALworxsAVwAXAHOpnwA8pa4z5gDKyOQiZZXxEUBuGVtJXcb+Ey+JdQGwi4w/ADzfGZO6jJkA6GM7OQK4S90G8Vp1xtR2sgJwlvpK6jKmI3YC0EZWVUhd/bEwpisGYAqgAvCMbKcn1mDGjPEUwA7AzTLW/Sv+Fd4sDFS+bHb63QAAAABJRU5ErkJggg==" alt="India Flag" class="flag-icon">
+            <span>INR</span>
+          </div>
+          <a href="/wishlist" class="icon-link">{% render 'icon-heart' %}</a>
+          <a href="/account" class="icon-link">{% render 'icon-user' %}</a>
+          <a href="/cart" class="icon-link">{% render 'icon-bag' %}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="header__mobile">
+    <button class="mobile-menu__toggle js-mobile-menu-toggle">
+      {% render 'icon-menu' %}
+    </button>
+
+    <a href="/" class="header__logo-wrapper">
+      {% if section.settings.logo %}
+        {{ section.settings.logo | image_url: width: 120 | image_tag: class: 'header__logo-mobile', alt: shop.name }}
+      {% else %}
+        <span class="h4">{{ shop.name }}</span>
+      {% endif %}
+    </a>
+
+    <div class="header__icons">
+      <button class="js-search-toggle">{% render 'icon-search' %}</button>
+      <a href="/cart" class="icon-link">{% render 'icon-bag' %}</a>
+    </div>
+  </div>
+
+  <nav class="nav__desktop">
+    <div class="header__main-container">
+      <ul class="nav__list">
+        <li><a href="/collections/new-arrivals" class="nav__link">New Arrivals</a></li>
+        <li><a href="/collections/all" class="nav__link">Shop</a></li>
+        <li><a href="/collections" class="nav__link">Collections</a></li>
+        <li><a href="/collections/ghar-ka-tyohaar" class="nav__link">Ghar Ka Tyohaar</a></li>
+        <li><a href="/collections/influencers-picks" class="nav__link">Influencers' Picks</a></li>
+        <li><a href="/collections/accessories" class="nav__link">Accessories</a></li>
+        <li><a href="/collections/khadi-cotton" class="nav__link">Khadi Cotton</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="mobile-menu__links">
+      <a href="/collections/new-arrivals" class="nav__link">New Arrivals</a>
+      <a href="/collections/all" class="nav__link">Shop</a>
+      <a href="/collections" class="nav__link">Collections</a>
+      <a href="/collections/ghar-ka-tyohaar" class="nav__link">Ghar Ka Tyohaar</a>
+      <a href="/collections/influencers-picks" class="nav__link">Influencers' Picks</a>
+      <a href="/collections/accessories" class="nav__link">Accessories</a>
+      <a href="/collections/khadi-cotton" class="nav__link">Khadi Cotton</a>
+    </div>
+  </div>
+</div>
+
 {% schema %}
 {
   "name": "Header",
@@ -6,151 +228,29 @@
     {
       "type": "image_picker",
       "id": "logo",
-      "label": "Logo image"
+      "label": "Logo"
     },
     {
-      "type": "url",
-      "id": "logo_link",
-      "label": "Logo link",
-      "default": "/"
+      "type": "range",
+      "id": "logo_width",
+      "min": 50,
+      "max": 250,
+      "step": 10,
+      "unit": "px",
+      "label": "Logo width",
+      "default": 180
     }
   ]
 }
 {% endschema %}
 
-<style>
-.header {
-  padding: 15px 0;
-  background: #fff;
-  border-bottom: 1px solid #f5f5f5;
-}
-
-.header__wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 15px;
-}
-
-.header__left {
-  display: flex;
-  align-items: center;
-  gap: 30px;
-}
-
-.header__logo {
-  max-width: 120px;
-}
-
-.header__logo img {
-  width: 100px;
-  height: auto;
-}
-
-.header__nav {
-  display: flex;
-  gap: 25px;
-}
-
-.nav-link {
-  font-size: 14px;
-  color: #000;
-  text-decoration: none;
-  text-transform: initial;
-}
-
-.nav-link.new {
-  color: #D23F57;
-}
-
-.header__right {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.search-form {
-  position: relative;
-}
-
-.search-input {
-  width: 200px;
-  padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-}
-
-.currency-selector {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-@media (max-width: 768px) {
-  .header__nav {
-    display: none;
-  }
-  
-  .search-form {
-    display: none;
-  }
-  
-  .header__menu-mobile {
-    display: block;
-  }
-}
-</style>
-
-<header class="header">
-  <div class="header__wrapper">
-    <div class="header__left">
-      <a href="/" class="header__logo">
-        <img src="nero-logo.png" alt="NERO" loading="lazy">
-      </a>
-
-      <nav class="header__nav">
-        <a href="/collections/new-arrivals" class="nav-link">New Arrivals</a>
-        <a href="/collections/shop" class="nav-link">Shop</a>
-        <a href="/collections" class="nav-link">Collections</a>
-        <a href="/collections/ghar-ka-tyohaar" class="nav-link">Ghar Ka Tyohaar</a>
-        <a href="/collections/influencers-picks" class="nav-link">Influencers' Picks</a>
-        <a href="/collections/accessories" class="nav-link">Accessories</a>
-        <a href="/collections/khadi-cotton" class="nav-link new">Khadi Cotton<span>New</span></a>
-      </nav>
-    </div>
-
-    <div class="header__right">
-      <form action="/search" class="search-form">
-        <input type="search" 
-               placeholder="Search for items"
-               class="search-input">
-      </form>
-
-      <a href="/wishlist" class="wishlist-link">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" stroke="currentColor" fill="none"/>
-        </svg>
-      </a>
-
-      <a href="/account" class="account-link">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" stroke="currentColor" fill="none"/>
-        </svg>
-      </a>
-
-      <div class="currency-selector">
-        <img src="flag-india.png" alt="INR" width="20" height="15">
-        <span>INR</span>
-      </div>
-
-      <a href="/cart" class="cart-link">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" stroke="currentColor" fill="none"/>
-        </svg>
-      </a>
-    </div>
-  </div>
-</header>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenuToggle = document.querySelector('.js-mobile-menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    mobileMenuToggle.addEventListener('click', function() {
+      mobileMenu.classList.toggle('is-active');
+    });
+  });
+</script>
