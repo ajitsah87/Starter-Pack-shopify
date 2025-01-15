@@ -21,8 +21,8 @@
 <style>
 .header {
   padding: 15px 0;
-  position: relative;
   background: #fff;
+  border-bottom: 1px solid #f5f5f5;
 }
 
 .header__wrapper {
@@ -37,16 +37,32 @@
 .header__left {
   display: flex;
   align-items: center;
+  gap: 30px;
 }
 
 .header__logo {
   max-width: 120px;
 }
 
+.header__logo img {
+  width: 100px;
+  height: auto;
+}
+
 .header__nav {
   display: flex;
-  gap: 20px;
-  margin-left: 30px;
+  gap: 25px;
+}
+
+.nav-link {
+  font-size: 14px;
+  color: #000;
+  text-decoration: none;
+  text-transform: initial;
+}
+
+.nav-link.new {
+  color: #D23F57;
 }
 
 .header__right {
@@ -57,14 +73,20 @@
 
 .search-form {
   position: relative;
-  max-width: 200px;
 }
 
 .search-input {
-  width: 100%;
+  width: 200px;
   padding: 8px 12px;
   border: 1px solid #ddd;
   border-radius: 4px;
+  font-size: 14px;
+}
+
+.currency-selector {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 @media (max-width: 768px) {
@@ -72,7 +94,11 @@
     display: none;
   }
   
-  .header__menu-toggle {
+  .search-form {
+    display: none;
+  }
+  
+  .header__menu-mobile {
     display: block;
   }
 }
@@ -81,47 +107,49 @@
 <header class="header">
   <div class="header__wrapper">
     <div class="header__left">
-      <button class="header__menu-toggle hidden md:block">
-        {% render 'icon-menu' %}
-      </button>
-      
-      <a href="{{ settings.logo_link | default: '/' }}" class="header__logo">
-        {% if settings.logo %}
-          {{ settings.logo | image_url: width: 120 | image_tag: loading: 'lazy', alt: shop.name }}
-        {% else %}
-          <span class="text-xl font-bold">{{ shop.name }}</span>
-        {% endif %}
+      <a href="/" class="header__logo">
+        <img src="nero-logo.png" alt="NERO" loading="lazy">
       </a>
 
       <nav class="header__nav">
-        {% for link in linklists.main-menu.links %}
-          <a href="{{ link.url }}" class="nav-link{% if link.active %} active{% endif %}">
-            {{ link.title }}
-          </a>
-        {% endfor %}
+        <a href="/collections/new-arrivals" class="nav-link">New Arrivals</a>
+        <a href="/collections/shop" class="nav-link">Shop</a>
+        <a href="/collections" class="nav-link">Collections</a>
+        <a href="/collections/ghar-ka-tyohaar" class="nav-link">Ghar Ka Tyohaar</a>
+        <a href="/collections/influencers-picks" class="nav-link">Influencers' Picks</a>
+        <a href="/collections/accessories" class="nav-link">Accessories</a>
+        <a href="/collections/khadi-cotton" class="nav-link new">Khadi Cotton<span>New</span></a>
       </nav>
     </div>
 
     <div class="header__right">
-      <form action="/search" method="get" class="search-form">
+      <form action="/search" class="search-form">
         <input type="search" 
-               name="q" 
                placeholder="Search for items"
-               class="search-input"
-               value="{{ search.terms | escape }}">
+               class="search-input">
       </form>
 
+      <a href="/wishlist" class="wishlist-link">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" stroke="currentColor" fill="none"/>
+        </svg>
+      </a>
+
       <a href="/account" class="account-link">
-        {% render 'icon-account' %}
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" stroke="currentColor" fill="none"/>
+        </svg>
       </a>
 
       <div class="currency-selector">
-        <span class="currency-flag">INR</span>
+        <img src="flag-india.png" alt="INR" width="20" height="15">
+        <span>INR</span>
       </div>
 
       <a href="/cart" class="cart-link">
-        {% render 'icon-cart' %}
-        <span class="cart-count">{{ cart.item_count }}</span>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" stroke="currentColor" fill="none"/>
+        </svg>
       </a>
     </div>
   </div>
