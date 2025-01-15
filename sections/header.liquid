@@ -1,8 +1,128 @@
-<div class="flex justify-between">
-    <span>logo</span >
-    <ul class="flex gap-2">
-        <li>link 1</li>
-        <li>link 2</li>
-        <li>link 3</li>
-    </ul>
-</div>
+{%- comment -%}Header Layout for NERO Theme{%- endcomment -%}
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },
+    {
+      "type": "url",
+      "id": "logo_link",
+      "label": "Logo link",
+      "default": "/"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+.header {
+  padding: 15px 0;
+  position: relative;
+  background: #fff;
+}
+
+.header__wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.header__left {
+  display: flex;
+  align-items: center;
+}
+
+.header__logo {
+  max-width: 120px;
+}
+
+.header__nav {
+  display: flex;
+  gap: 20px;
+  margin-left: 30px;
+}
+
+.header__right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.search-form {
+  position: relative;
+  max-width: 200px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+  .header__nav {
+    display: none;
+  }
+  
+  .header__menu-toggle {
+    display: block;
+  }
+}
+</style>
+
+<header class="header">
+  <div class="header__wrapper">
+    <div class="header__left">
+      <button class="header__menu-toggle hidden md:block">
+        {% render 'icon-menu' %}
+      </button>
+      
+      <a href="{{ settings.logo_link | default: '/' }}" class="header__logo">
+        {% if settings.logo %}
+          {{ settings.logo | image_url: width: 120 | image_tag: loading: 'lazy', alt: shop.name }}
+        {% else %}
+          <span class="text-xl font-bold">{{ shop.name }}</span>
+        {% endif %}
+      </a>
+
+      <nav class="header__nav">
+        {% for link in linklists.main-menu.links %}
+          <a href="{{ link.url }}" class="nav-link{% if link.active %} active{% endif %}">
+            {{ link.title }}
+          </a>
+        {% endfor %}
+      </nav>
+    </div>
+
+    <div class="header__right">
+      <form action="/search" method="get" class="search-form">
+        <input type="search" 
+               name="q" 
+               placeholder="Search for items"
+               class="search-input"
+               value="{{ search.terms | escape }}">
+      </form>
+
+      <a href="/account" class="account-link">
+        {% render 'icon-account' %}
+      </a>
+
+      <div class="currency-selector">
+        <span class="currency-flag">INR</span>
+      </div>
+
+      <a href="/cart" class="cart-link">
+        {% render 'icon-cart' %}
+        <span class="cart-count">{{ cart.item_count }}</span>
+      </a>
+    </div>
+  </div>
+</header>
